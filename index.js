@@ -8,5 +8,5 @@ function init(service, securityPacket, secret, requestPacket, action) {
       key = 'There was an error ' + e.message;
   }
 
-  return hashed_key;
+  return key;
 }
