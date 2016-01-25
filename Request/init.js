@@ -15,7 +15,18 @@ var algorithm = 'SHA-256';
 
 
 module.exports = function(service, securityPacket, secret, requestPacket, action) {
-  var validate = validator.validate(service, securityPacket);
+  var validate = validator.validate(service, securityPacket, secret, requestPacket, action);
+
+  service = service;
+  securityPacket = securityPacket;
+  secret = secret;
+  requestPacket = requestPacket;
+  requestString = generateRequestString();
+  action = action;
+
+  setServiceOptions();
+
+  securityPacket['signature'] = generateSignature();
   // var shaObj = new jsSHA('SHA-256', 'TEXT');
   // shaObj.update('Hello');
   // var hash = shaObj.getHash('HEX');
@@ -36,7 +47,13 @@ function generateSignature() {
 }
 
 function generateRequestString() {
-  if (typeof REQUESTPACKET === 'undefined') {
-    return;
+  if (typeof requestPacket === 'undefined') {
+    return null;
   }
+  requestString = JSON.parse(requestPacket);
+  if (false === requestString) {
+    throw new Error('Invalid data, please check your request packet - ');
+  }
+
+  return requestString;
 }
