@@ -13,4 +13,4 @@ var init = {
     }
 }
 
-modules.export = init;
+module.exports = init;
