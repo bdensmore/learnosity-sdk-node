@@ -1,0 +1,16 @@
+{
+  "name": "learnosity-sdk-node",
+  "version": "1.0.0",
+  "description": "Learnosity SDK for NodeJS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Learnosity",
+    "Learnosity",
+    "SDK"
+  ],
+  "author": "Ben Densmore",
+  "license": "ISC"
+}
