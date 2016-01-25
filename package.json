@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Learnosity SDK for NodeJS",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bdensmore/learnosity-sdk-node.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -12,5 +16,9 @@
     "SDK"
   ],
   "author": "Ben Densmore",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "dateformat": "^1.0.12",
+    "jssha": "^2.0.2"
+  }
 }
