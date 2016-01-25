@@ -2,7 +2,7 @@ var request_init = require('./Request/init.js');
 var key;
 
 var init = {
-  function (service, securityPacket, secret, requestPacket, action) {
+  init: function(service, securityPacket, secret, requestPacket, action) {
     try {
         key = request_init(service, securityPacket, secret, requestPacket, action);
       } catch(e) {
