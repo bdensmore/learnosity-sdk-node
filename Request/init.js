@@ -1,6 +1,6 @@
 var dateFormat = require('dateformat');
 var validator = require('./validator.js');
-var serviceOptions = require('service-options.js');
+var serviceOptions = require('./service-options.js');
 
 var service;
 var secret;
