@@ -20,7 +20,7 @@ var validator = {
     if (typeof service === 'undefined') {
       throw new Error('The `service` argument wasn\'t found or was empty');
     } else if (validServices.indexOf(service) < 0) {
-        throw new Error('The service provided ' + service + 'is not valid');
+        throw new Error('The service provided ' + service + ' is not valid');
     }
 
     if (!typeof securityPacket === 'array' && typeof securityPacket === 'string') {

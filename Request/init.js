@@ -1,6 +1,6 @@
-var jsSHA = require('jssha');
 var dateFormat = require('dateformat');
 var validator = require('./validator.js');
+var serviceOptions = require('service-options.js');
 
 var service;
 var secret;
@@ -9,29 +9,86 @@ var requestPacket;
 var requestString;
 var action;
 var signedRequestData = true;
-var algorithm = 'SHA-256';
 
 
 
 
-module.exports = function(service, securityPacket, secret, requestPacket, action) {
-  var validate = validator.validate(service, securityPacket, secret, requestPacket, action);
 
-  service = service;
-  securityPacket = securityPacket;
-  secret = secret;
-  requestPacket = requestPacket;
-  requestString = generateRequestString();
-  action = action;
+var init = {
+  init: function(service, securityPacket, secret, requestPacket, action) {
+    var validate = validator.validate(service, securityPacket, secret, requestPacket, action);
 
-  setServiceOptions();
+    service = service;
+    securityPacket = securityPacket;
+    secret = secret;
+    requestPacket = requestPacket;
+    requestString = generateRequestString();
+    action = action;
 
-  securityPacket['signature'] = generateSignature();
-  // var shaObj = new jsSHA('SHA-256', 'TEXT');
-  // shaObj.update('Hello');
-  // var hash = shaObj.getHash('HEX');
-  return validate;
+    serviceOptions.set(service, requestPacket, securityPacket);
+
+    securityPacket['signature'] = generateSignature();
+
+  },
+  generate: function() {
+    var output = [];
+
+    switch (service) {
+      case 'assess':
+      case 'author':
+      case 'data':
+      case 'items':
+      case 'reports':
+
+        // Add the security packet (with signature) to the output
+        output['security'] = securityPacket;
+
+        if (!typeof requestPacket === 'undefined') {
+          output['request'] = requestPacket;
+        }
+
+        if (!typeof action === 'undefined') {
+          output['action'] = action;
+        }
+
+        if (service === 'data') {
+          r['security'] = JSON.parse(output['security']);
+          if (output.indexOf('request') >= 0) {
+            r['request'] = JSON.parse(output['request']);
+          }
+          if (output.indexOf('action') >= 0) {
+            r['action'] = output['action'];
+          }
+          return r;
+        } else if (service === 'assess') {
+          output = output['request'];
+        }
+        break;
+      case 'questions':
+        output = securityPacket;
+
+        // Remove the `domain` key from the security packet
+        delete output['domain'];
+
+        if (!typeof requestPacket === 'undefined') {
+          output = requestPacket.concat(output);
+        }
+        break;
+      case 'events':
+        // Add the security packet (with signature) to the output
+        output['security'] = securityPacket;
+        output['config'] = requestPacket;
+        break;
+      default:
+        // no default
+        break;
+    }
+
+    return JSON.parse(output);
+  }
 }
+
+
 
 function generateSignature() {
   var signatureArray = [];
@@ -57,3 +114,5 @@ function generateRequestString() {
 
   return requestString;
 }
+
+module.exports = init;
